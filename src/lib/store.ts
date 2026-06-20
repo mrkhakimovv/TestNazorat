@@ -63,6 +63,11 @@ export const getTestByCode = async (code: string): Promise<Test | undefined> => 
   return { id: docData.id, ...docData.data() } as Test;
 };
 
+export const deleteTest = async (id: string) => {
+  const testRef = doc(db, 'tests', id);
+  await deleteDoc(testRef);
+};
+
 export const getResults = async (): Promise<TestResult[]> => {
   const q = query(collection(db, 'results'), orderBy('date', 'desc'));
   const snapshot = await getDocs(q);
