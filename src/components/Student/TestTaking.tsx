@@ -80,25 +80,11 @@ export default function TestTaking({ test, onFinish }: { test: Test, onFinish: (
 
   return (
     <div className="flex flex-col h-full bg-slate-50 min-h-[600px]">
-      <div className="sticky top-0 bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between z-10 shadow-sm">
-        <h2 className="text-lg font-bold text-[#1E293B] hidden md:block">{test.title}</h2>
-        
-        <div className="flex items-center gap-4 w-full md:w-auto justify-end">
-          <button 
-            disabled={isSubmitting}
-            onClick={() => {
-              if (window.confirm("Testni yakunlashni tasdiqlaysizmi?")) {
-                handleFinish();
-              }
-            }}
-            className="bg-[#1E293B] hover:bg-slate-800 text-white px-5 py-2 rounded-sm font-medium transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <CheckCircle2 size={18}/> {isSubmitting ? "Yakunlanmoqda..." : "Yakunlash"}
-          </button>
+      <div className="flex-1 p-4 md:p-8 overflow-y-auto w-full max-w-3xl mx-auto space-y-6 sm:space-y-8">
+        <div className="bg-white p-4 sm:p-6 border border-slate-200 rounded-sm shadow-sm mb-4">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#1E293B]">{test.title}</h2>
         </div>
-      </div>
 
-      <div className="flex-1 p-4 md:p-8 overflow-y-auto w-full max-w-3xl mx-auto space-y-8">
         {test.questions.map((q, index) => {
           const userAns = answers[q.id] || [];
           return (
@@ -107,14 +93,14 @@ export default function TestTaking({ test, onFinish }: { test: Test, onFinish: (
                 <span className="shrink-0">{index + 1}-savol</span>
               </h3>
 
-              <div className="flex flex-wrap gap-3 mt-4">
+              <div className="flex flex-row justify-between sm:justify-start gap-2 sm:gap-3 mt-4 w-full">
                 {q.options.map(o => {
                   const isSelected = userAns.includes(o.id);
                   return (
                     <button
                       key={o.id}
                       onClick={() => toggleAnswer(q.id, o.id, q.type)}
-                      className={`w-14 h-14 md:w-16 md:h-16 rounded-md font-bold text-lg transition-colors flex items-center justify-center border
+                      className={`flex-1 sm:flex-none sm:w-16 h-12 sm:h-16 rounded-md font-bold text-base md:text-lg transition-colors flex items-center justify-center border
                         ${isSelected 
                           ? 'bg-[#1E293B] border-[#1E293B] text-white shadow-sm' 
                           : 'bg-slate-50 border-slate-200 text-[#1E293B] hover:bg-slate-100 hover:border-slate-300'}`}

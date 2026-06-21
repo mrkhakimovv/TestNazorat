@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Test, Question, Option } from '../../types';
+import { Test, Question, Option, TestType } from '../../types';
 import { generateUniqueCode, saveTest, getTestByCode } from '../../lib/store';
 import { Save, X, ArrowLeft, Book } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
@@ -16,6 +16,7 @@ export default function TestCreation({ onSuccess }: { onSuccess: () => void }) {
   const { user } = useAuth();
   const [step, setStep] = useState<1 | 2>(1);
   const [title, setTitle] = useState('');
+  const [testType, setTestType] = useState<TestType | ''>('');
   const [questionCount, setQuestionCount] = useState<number | ''>('');
   const [testCodeInput, setTestCodeInput] = useState('');
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -25,6 +26,7 @@ export default function TestCreation({ onSuccess }: { onSuccess: () => void }) {
   const handleNextStep = () => {
     setError('');
     if (!title.trim()) return setError("Test nomini kiriting.");
+    if (!testType) return setError("Test turini tanlang.");
     if (!questionCount || questionCount <= 0 || questionCount > 200) {
       return setError("Savollar sonini to'g'ri kiriting (1-200 oraliqda).");
     }
@@ -85,6 +87,7 @@ export default function TestCreation({ onSuccess }: { onSuccess: () => void }) {
         id: Math.random().toString(36).substring(2, 9),
         code: finalTestCode,
         title: title.trim(),
+        testType: testType as TestType,
         questions,
         createdAt: new Date().toISOString()
       };
@@ -149,6 +152,25 @@ export default function TestCreation({ onSuccess }: { onSuccess: () => void }) {
               placeholder="Masalan: 1-chorak Majburiy Matematika"
               className="w-full border border-slate-300 px-4 py-2.5 rounded-sm outline-none focus:border-[#1E293B]"
             />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-[#1E293B] mb-2">Test turi</label>
+            <div className="flex flex-wrap gap-3">
+              {(['Asosiy', 'Majburiy', 'Mavzulashtirilgan'] as TestType[]).map((type) => (
+                <button
+                  key={type}
+                  onClick={() => setTestType(type)}
+                  className={`flex-1 min-w-[120px] py-2.5 border rounded-sm text-sm font-medium transition-colors ${
+                    testType === type 
+                      ? 'bg-[#1E293B] text-white border-[#1E293B]' 
+                      : 'bg-white text-slate-600 border-slate-300 hover:bg-slate-50'
+                  }`}
+                >
+                  {type}
+                </button>
+              ))}
+            </div>
           </div>
           
           <div>

@@ -63,6 +63,11 @@ export const getTestByCode = async (code: string): Promise<Test | undefined> => 
   return { id: docData.id, ...docData.data() } as Test;
 };
 
+export const updateTest = async (id: string, data: Partial<Test>) => {
+  const testRef = doc(db, 'tests', id);
+  await updateDoc(testRef, data);
+};
+
 export const deleteTest = async (id: string) => {
   const testRef = doc(db, 'tests', id);
   await deleteDoc(testRef);

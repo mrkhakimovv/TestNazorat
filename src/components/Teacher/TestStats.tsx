@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { getTests, getResultsForTest } from '../../lib/store';
-import { Test, TestResult } from '../../types';
-import { ArrowLeft, TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { getTests, getResultsForTest, updateTest } from '../../lib/store';
+import { Test, TestResult, TestType } from '../../types';
+import { ArrowLeft, TrendingUp, TrendingDown, Minus, Edit2, Check, X } from 'lucide-react';
 
 export default function TestStats({ testId, onBack }: { testId: string, onBack: () => void }) {
   const [test, setTest] = useState<Test | null>(null);
   const [results, setResults] = useState<TestResult[]>([]);
+  const [isEditingType, setIsEditingType] = useState(false);
+  const [selectedType, setSelectedType] = useState<TestType | ''>('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,6 +31,14 @@ export default function TestStats({ testId, onBack }: { testId: string, onBack: 
     ? Math.max(...results.map(r => r.percentage)) 
     : 0;
 
+  const handleSaveType = async () => {
+    if (test && selectedType && selectedType !== test.testType) {
+      await updateTest(test.id, { testType: selectedType as TestType });
+      setTest({ ...test, testType: selectedType as TestType });
+    }
+    setIsEditingType(false);
+  };
+
   return (
     <div className="p-6">
       <button 
@@ -41,7 +51,44 @@ export default function TestStats({ testId, onBack }: { testId: string, onBack: 
       <div className="mb-6 flex flex-col md:flex-row md:items-start justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold text-[#1E293B] mb-1">{test.title}</h2>
-          <p className="text-slate-500 text-sm">Test kodi: <span className="font-mono text-[#1E293B] font-medium">{test.code}</span></p>
+          <div className="flex flex-wrap items-center gap-4">
+            <p className="text-slate-500 text-sm">Test kodi: <span className="font-mono text-[#1E293B] font-medium">{test.code}</span></p>
+            {isEditingType ? (
+              <div className="flex items-center gap-2">
+                <select 
+                  value={selectedType} 
+                  onChange={(e) => setSelectedType(e.target.value as TestType)}
+                  className="text-sm border border-slate-300 rounded-sm px-2 py-1 outline-none focus:border-[#1E293B]"
+                >
+                  <option value="Asosiy">Asosiy</option>
+                  <option value="Majburiy">Majburiy</option>
+                  <option value="Mavzulashtirilgan">Mavzulashtirilgan</option>
+                </select>
+                <button onClick={handleSaveType} className="text-emerald-600 hover:bg-emerald-50 p-1 rounded-sm"><Check size={16} /></button>
+                <button onClick={() => setIsEditingType(false)} className="text-red-500 hover:bg-red-50 p-1 rounded-sm"><X size={16} /></button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                {test.testType ? (
+                  <span className="bg-blue-50 text-blue-700 text-xs px-2 py-0.5 rounded border border-blue-100 font-medium">
+                    {test.testType}
+                  </span>
+                ) : (
+                  <span className="text-sm text-slate-400 italic">Turi belgilanmagan</span>
+                )}
+                <button 
+                  onClick={() => {
+                    setSelectedType(test.testType || 'Asosiy');
+                    setIsEditingType(true);
+                  }} 
+                  className="text-slate-400 hover:text-[#1E293B] transition-colors p-1"
+                  title="Turini o'zgartirish"
+                >
+                  <Edit2 size={14} />
+                </button>
+              </div>
+            )}
+          </div>
         </div>
         
         <div className="bg-slate-50 p-3 border border-slate-200 rounded-sm w-full md:w-auto">

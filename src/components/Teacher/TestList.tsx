@@ -67,9 +67,16 @@ export default function TestList({ onViewStats }: { onViewStats: (id: string) =>
             <div>
               <div className="flex justify-between items-start mb-2 pr-8">
                 <h3 className="font-bold text-[#1E293B] text-lg leading-tight line-clamp-2" title={test.title}>{test.title}</h3>
-                <span className="bg-slate-100 text-[#1E293B] font-mono text-xs px-2 py-1 rounded-sm tracking-wider border border-slate-200">
-                  {test.code}
-                </span>
+                <div className="flex flex-col items-end gap-1 shrink-0">
+                  <span className="bg-slate-100 text-[#1E293B] font-mono text-xs px-2 py-1 rounded-sm tracking-wider border border-slate-200">
+                    {test.code}
+                  </span>
+                  {test.testType && (
+                    <span className="bg-blue-50 text-blue-700 text-[10px] px-1.5 py-0.5 rounded border border-blue-100 font-medium">
+                      {test.testType}
+                    </span>
+                  )}
+                </div>
               </div>
               <button 
                 onClick={(e) => confirmDelete(e, test.id)}

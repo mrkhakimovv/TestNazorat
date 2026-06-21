@@ -21,10 +21,13 @@ export interface Question {
   correctOptions: string[]; // array of option IDs
 }
 
+export type TestType = 'Asosiy' | 'Majburiy' | 'Mavzulashtirilgan';
+
 export interface Test {
   id: string;
   code: string;
   title: string;
+  testType: TestType;
   questions: Question[];
   createdAt: string;
 }
