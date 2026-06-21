@@ -40,16 +40,16 @@ export default function TeacherDashboard() {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8 w-full flex flex-col md:flex-row gap-4 sm:gap-6">
-        {/* Sidebar Nav */}
-        <aside className="w-full md:w-64 shrink-0">
-          <nav className="flex flex-row md:flex-col gap-2 overflow-x-auto pb-2 md:pb-0 snap-x">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8 w-full flex flex-col md:flex-row gap-4 sm:gap-6 pb-20 md:pb-8">
+        {/* Sidebar Nav (Desktop) */}
+        <aside className="hidden md:block w-64 shrink-0">
+          <nav className="flex flex-col gap-2">
             <button
               onClick={() => setActiveTab('list')}
-              className={`whitespace-nowrap shrink-0 snap-start flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-sm transition-colors ${
+              className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-sm transition-colors ${
                 activeTab === 'list' 
                   ? 'bg-[#1E293B] text-white' 
-                  : 'text-slate-600 bg-white border border-slate-200 md:border-transparent hover:bg-slate-100'
+                  : 'text-slate-600 hover:bg-slate-100'
               }`}
             >
               <List size={18} />
@@ -57,10 +57,10 @@ export default function TeacherDashboard() {
             </button>
             <button
               onClick={() => setActiveTab('create')}
-              className={`whitespace-nowrap shrink-0 snap-start flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-sm transition-colors ${
+              className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-sm transition-colors ${
                 activeTab === 'create' 
                   ? 'bg-[#1E293B] text-white' 
-                  : 'text-slate-600 bg-white border border-slate-200 md:border-transparent hover:bg-slate-100'
+                  : 'text-slate-600 hover:bg-slate-100'
               }`}
             >
               <PlusCircle size={18} />
@@ -68,10 +68,10 @@ export default function TeacherDashboard() {
             </button>
             <button
               onClick={() => setActiveTab('students')}
-              className={`whitespace-nowrap shrink-0 snap-start flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-sm transition-colors ${
+              className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-sm transition-colors ${
                 activeTab === 'students' 
                   ? 'bg-[#1E293B] text-white' 
-                  : 'text-slate-600 bg-white border border-slate-200 md:border-transparent hover:bg-slate-100'
+                  : 'text-slate-600 hover:bg-slate-100'
               }`}
             >
               <Users size={18} />
@@ -79,7 +79,7 @@ export default function TeacherDashboard() {
             </button>
             {activeTab === 'stats' && (
               <button
-                className={`whitespace-nowrap shrink-0 snap-start flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-sm transition-colors bg-[#1E293B] text-white`}
+                className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-sm transition-colors bg-[#1E293B] text-white`}
               >
                 <BarChart2 size={18} />
                 Test statistikasi
@@ -87,6 +87,43 @@ export default function TeacherDashboard() {
             )}
           </nav>
         </aside>
+
+        {/* Bottom Nav (Mobile) */}
+        <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-50 px-4 py-2 flex justify-around items-center">
+          <button
+            onClick={() => setActiveTab('list')}
+            className={`flex flex-col items-center gap-1 p-2 text-xs font-medium transition-colors ${
+              (activeTab === 'list' || activeTab === 'stats')
+                ? 'text-[#1E293B]' 
+                : 'text-slate-500 hover:text-slate-700'
+            }`}
+          >
+            <List size={20} />
+            <span>Testlar</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('create')}
+            className={`flex flex-col items-center gap-1 p-2 text-xs font-medium transition-colors ${
+              activeTab === 'create' 
+                ? 'text-[#1E293B]' 
+                : 'text-slate-500 hover:text-slate-700'
+            }`}
+          >
+            <PlusCircle size={20} />
+            <span>Yaratish</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('students')}
+            className={`flex flex-col items-center gap-1 p-2 text-xs font-medium transition-colors ${
+              activeTab === 'students' 
+                ? 'text-[#1E293B]' 
+                : 'text-slate-500 hover:text-slate-700'
+            }`}
+          >
+            <Users size={20} />
+            <span>O'quvchilar</span>
+          </button>
+        </div>
 
         {/* Main Content Area */}
         <section className="flex-1 bg-white border border-slate-200 rounded-sm shadow-sm min-h-[500px] overflow-hidden">
