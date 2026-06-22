@@ -71,11 +71,9 @@ export default function TestList({ onViewStats }: { onViewStats: (id: string) =>
                   <span className="bg-slate-100 text-[#1E293B] font-mono text-xs px-2 py-1 rounded-sm tracking-wider border border-slate-200">
                     {test.code}
                   </span>
-                  {test.testType && (
-                    <span className="bg-blue-50 text-blue-700 text-[10px] px-1.5 py-0.5 rounded border border-blue-100 font-medium">
-                      {test.testType}
-                    </span>
-                  )}
+                  <span className="bg-blue-50 text-blue-700 text-[10px] px-1.5 py-0.5 rounded border border-blue-100 font-medium">
+                    {test.testType || 'Asosiy'}
+                  </span>
                 </div>
               </div>
               <button 

@@ -55,7 +55,8 @@ export default function AvailableTests({ onStartTest }: AvailableTestsProps) {
 
   const filteredTests = tests.filter(test => {
     if (filterType === 'Barchasi') return true;
-    return test.testType === filterType;
+    const currentTestType = test.testType || 'Asosiy';
+    return currentTestType === filterType;
   });
 
   return (
@@ -112,11 +113,9 @@ export default function AvailableTests({ onStartTest }: AvailableTestsProps) {
                   <div className="flex items-center gap-2 text-xs text-slate-500 font-mono bg-slate-100 self-start px-2 py-1 rounded-sm">
                     KOD: {test.code}
                   </div>
-                  {test.testType && (
-                    <span className="bg-blue-50 text-blue-700 text-[10px] px-1.5 py-0.5 rounded border border-blue-100 font-medium">
-                      {test.testType}
-                    </span>
-                  )}
+                  <span className="bg-blue-50 text-blue-700 text-[10px] px-1.5 py-0.5 rounded border border-blue-100 font-medium">
+                    {test.testType || 'Asosiy'}
+                  </span>
                 </div>
 
                 <div className="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between">
