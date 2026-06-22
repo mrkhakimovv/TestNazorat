@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { getTests, getResultsForTest, updateTest } from '../../lib/store';
 import { Test, TestResult, TestType } from '../../types';
 import { ArrowLeft, TrendingUp, TrendingDown, Minus, Edit2, Check, X } from 'lucide-react';
+import StudentStatsModal from './StudentStatsModal';
 
 export default function TestStats({ testId, onBack }: { testId: string, onBack: () => void }) {
   const [test, setTest] = useState<Test | null>(null);
   const [results, setResults] = useState<TestResult[]>([]);
   const [isEditingType, setIsEditingType] = useState(false);
   const [selectedType, setSelectedType] = useState<TestType | ''>('');
+  const [selectedStudent, setSelectedStudent] = useState<{name: string, username: string} | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -165,7 +167,12 @@ export default function TestStats({ testId, onBack }: { testId: string, onBack: 
 
                 return (
                   <tr key={r.id} className="hover:bg-slate-50">
-                    <td className="px-4 py-3 font-medium text-[#1E293B]">{r.studentName}</td>
+                    <td 
+                      className="px-4 py-3 font-medium text-[#1E293B] cursor-pointer hover:text-blue-600 hover:underline"
+                      onClick={() => setSelectedStudent({ name: r.studentName, username: r.studentUsername })}
+                    >
+                      {r.studentName}
+                    </td>
                     <td className="px-4 py-3 text-slate-500">@{r.studentUsername}</td>
                     <td className="px-4 py-3 text-slate-500">{new Date(r.date).toLocaleString('uz-UZ')}</td>
                     <td className="px-4 py-3 text-red-500 max-w-xs whitespace-normal break-words">
@@ -198,6 +205,13 @@ export default function TestStats({ testId, onBack }: { testId: string, onBack: 
             </tbody>
           </table>
         </div>
+      )}
+
+      {selectedStudent && (
+        <StudentStatsModal 
+          student={selectedStudent} 
+          onClose={() => setSelectedStudent(null)} 
+        />
       )}
     </div>
   );
